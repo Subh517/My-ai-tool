@@ -5,693 +5,615 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Toolkit — Free Multi AI Tools</title>
   <style>
-    :root {
-      --bg: #020617;
-      --panel: #020617;
-      --card: #020617;
-      --border: #020617;
-      --muted: #94a3b8;
-      --text: #e5e7eb;
-      --accent: #22c55e;
-      --accent2: #38bdf8;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; font-family: Inter, system-ui, sans-serif; }
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: radial-gradient(circle at top, #0f172a, #020617);
-      color: var(--text);
-      min-height: 100vh;
+      background: radial-gradient(circle at top, #0b1220, #020617);
+      color: #e5e7eb;
       display: flex;
+      min-height: 100vh;
     }
 
     /* Sidebar */
     .sidebar {
       width: 240px;
-      background: #020617;
-      border-right: 1px solid #020617;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .logo {
-      font-size: 1.2rem;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .logo span {
-      color: var(--accent);
-    }
-
-    .nav-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .nav-title {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .nav-btn {
-      background: transparent;
-      border: 1px solid #020617;
-      color: var(--text);
-      padding: 8px 10px;
-      border-radius: 8px;
-      text-align: left;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.15s ease;
-    }
-
-    .nav-btn:hover,
-    .nav-btn.active {
-      border-color: var(--accent);
-      background: rgba(34,197,94,0.08);
-    }
-
-    /* Main */
-    .main {
-      flex: 1;
+      background: linear-gradient(180deg, #020617, #020617cc);
+      border-right: 1px solid #0f172a;
       padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 16px;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 18px;
+      color: #22c55e;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .nav-btn {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: #e5e7eb;
+      text-align: left;
+      cursor: pointer;
+      transition: .2s;
+    }
+    .nav-btn:hover, .nav-btn.active {
+      background: #0f172a;
+      color: #22c55e;
+    }
+
+    .spacer { flex: 1; }
+
+    /* Main */
+    .main {
+      flex: 1;
+      padding: 28px;
+      overflow-y: auto;
     }
 
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      margin-bottom: 24px;
+      gap: 16px;
     }
 
     .search {
       flex: 1;
-      max-width: 360px;
+      max-width: 420px;
       background: #020617;
-      border: 1px solid #020617;
-      border-radius: 10px;
-      padding: 8px 10px;
-      color: var(--text);
+      border: 1px solid #0f172a;
+      color: #e5e7eb;
+      border-radius: 12px;
+      padding: 10px 14px;
       outline: none;
     }
 
-    .badge {
-      background: rgba(56,189,248,0.15);
-      color: var(--accent2);
-      border: 1px solid rgba(56,189,248,0.3);
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      font-weight: 600;
+    .login-btn {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border: none;
+      color: #022c22;
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
     }
 
-    /* Cards */
+    h1 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
     }
 
     .card {
-      background: linear-gradient(180deg, #020617, #020617);
-      border: 1px solid #020617;
-      border-radius: 14px;
-      padding: 14px;
+      background: linear-gradient(180deg, #020617, #020617aa);
+      border: 1px solid #0f172a;
+      border-radius: 16px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 10px;
       cursor: pointer;
-      transition: all 0.18s ease;
-      position: relative;
-      overflow: hidden;
+      transition: .2s ease;
     }
 
     .card:hover {
-      border-color: var(--accent);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      transform: translateY(-3px);
+      border-color: #22c55e;
+      box-shadow: 0 10px 30px #00000066;
     }
 
-    .card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top left, rgba(34,197,94,0.12), transparent 60%);
-      opacity: 0;
-      transition: opacity 0.18s ease;
-    }
-
-    .card:hover::after {
-      opacity: 1;
-    }
-
-    .card h3 {
-      margin: 0;
-      font-size: 0.95rem;
+    .badge {
+      background: #052e1a;
+      color: #22c55e;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      width: fit-content;
       font-weight: 600;
     }
 
-    .card p {
-      margin: 0;
-      font-size: 0.8rem;
-      color: var(--muted);
+    .card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #0f172a;
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: #94a3b8;
       line-height: 1.4;
     }
 
-    .tag {
-      align-self: flex-start;
-      font-size: 0.65rem;
-      padding: 3px 7px;
-      border-radius: 999px;
-      background: rgba(34,197,94,0.15);
-      color: var(--accent);
-      border: 1px solid rgba(34,197,94,0.3);
-      font-weight: 600;
-    }
-
-    /* Tool panel */
-    .tool-panel {
-      margin-top: 10px;
-      background: #020617;
-      border: 1px solid #020617;
-      border-radius: 16px;
-      padding: 16px;
+    /* Tool Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: #020617ee;
       display: none;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .tool-panel.active {
-      display: flex;
-    }
-
-    .tool-header {
-      display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
+      z-index: 50;
     }
 
-    .tool-header h2 {
+    .modal-content {
+      background: linear-gradient(180deg, #020617, #020617aa);
+      border: 1px solid #0f172a;
+      border-radius: 18px;
+      padding: 22px;
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 20px 60px #000000aa;
+    }
+
+    .modal h2 {
       margin: 0;
-      font-size: 1.1rem;
-      font-weight: 600;
+      font-size: 18px;
     }
 
-    .close-btn {
-      background: transparent;
-      border: 1px solid #020617;
-      color: var(--muted);
-      border-radius: 8px;
-      padding: 4px 8px;
-      cursor: pointer;
-      font-size: 0.75rem;
-    }
-
-    .close-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .tool-panel textarea,
-    .tool-panel input {
+    .modal textarea, .modal input {
       width: 100%;
       background: #020617;
-      border: 1px solid #020617;
+      border: 1px solid #0f172a;
       border-radius: 10px;
       padding: 10px;
-      color: var(--text);
-      font-size: 0.9rem;
+      color: #e5e7eb;
       outline: none;
       resize: vertical;
       min-height: 90px;
     }
 
-    .tool-panel input {
-      min-height: unset;
-    }
-
-    .tool-panel button {
-      align-self: flex-start;
-      background: linear-gradient(135deg, var(--accent), #16a34a);
+    .generate-btn {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
       border: none;
-      color: #052e16;
-      padding: 8px 14px;
+      color: #022c22;
+      font-weight: 700;
+      padding: 10px;
       border-radius: 10px;
-      font-size: 0.85rem;
-      font-weight: 600;
       cursor: pointer;
-    }
-
-    .tool-panel button:hover {
-      filter: brightness(1.05);
     }
 
     .output {
       background: #020617;
-      border: 1px solid #020617;
-      border-radius: 12px;
+      border: 1px solid #0f172a;
+      border-radius: 10px;
       padding: 10px;
-      font-size: 0.85rem;
-      line-height: 1.5;
+      font-size: 14px;
       white-space: pre-wrap;
-      min-height: 80px;
+      min-height: 90px;
     }
 
-    /* Mobile */
-    @media (max-width: 800px) {
-      body {
-        flex-direction: column;
-      }
-      .sidebar {
-        width: 100%;
-        flex-direction: row;
-        overflow-x: auto;
-        gap: 10px;
-      }
-      .nav-group {
-        flex-direction: row;
-        gap: 8px;
-      }
-      .nav-title {
-        display: none;
-      }
-      .main {
-        padding: 14px;
-      }
+    .close-btn {
+      background: transparent;
+      border: 1px solid #0f172a;
+      color: #94a3b8;
+      border-radius: 10px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    /* Login Modal */
+    .login-modal .modal-content {
+      max-width: 380px;
+    }
+
+    .footer-note {
+      font-size: 11px;
+      color: #64748b;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
   <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="logo">⚡ <span>AI</span>Toolkit</div>
+  <div class="sidebar">
+    <div class="logo">⚡ AI Toolkit</div>
 
-    <div class="nav-group">
-      <div class="nav-title">Content</div>
-      <button class="nav-btn active" onclick="filterCategory('content')">Creators</button>
-      <button class="nav-btn" onclick="filterCategory('business')">Business</button>
-      <button class="nav-btn" onclick="filterCategory('students')">Students</button>
-      <button class="nav-btn" onclick="filterCategory('devs')">Developers</button>
-      <button class="nav-btn" onclick="filterCategory('fun')">Fun</button>
-    </div>
+    <div class="section">Content</div>
+    <button class="nav-btn active" onclick="showCategory('creators')">Creators</button>
+    <button class="nav-btn" onclick="showCategory('business')">Business</button>
+    <button class="nav-btn" onclick="showCategory('students')">Students</button>
+    <button class="nav-btn" onclick="showCategory('developers')">Developers</button>
+    <button class="nav-btn" onclick="showCategory('fun')">Fun</button>
 
-    <div class="nav-group">
-      <div class="nav-title">Platform</div>
-      <button class="nav-btn">Dashboard</button>
-      <button class="nav-btn">Docs</button>
-      <button class="nav-btn">Changelog</button>
-    </div>
-  </aside>
+    <div class="section">Platform</div>
+    <button class="nav-btn" onclick="openDashboard()">Dashboard</button>
+    <button class="nav-btn" onclick="openDocs()">Docs</button>
+    <button class="nav-btn" onclick="openLogin()">Login</button>
+
+    <div class="spacer"></div>
+    <div class="footer-note">Free • No login required</div>
+  </div>
 
   <!-- Main -->
-  <main class="main">
+  <div class="main">
     <div class="topbar">
-      <input id="search" class="search" placeholder="Search tools..." oninput="searchTools()" />
-      <span class="badge">Free • No Login</span>
+      <input class="search" id="searchInput" placeholder="Search tools..." oninput="filterTools()"/>
+      <button class="login-btn" onclick="openLogin()">Free • No Login</button>
     </div>
 
-    <!-- Tool cards -->
-    <div id="toolGrid" class="grid"></div>
+    <h1 id="pageTitle">Creators</h1>
+    <div class="grid" id="toolGrid"></div>
+  </div>
 
-    <!-- Tool panel -->
-    <div id="toolPanel" class="tool-panel">
-      <div class="tool-header">
-        <h2 id="toolTitle"></h2>
-        <button class="close-btn" onclick="closeTool()">Close</button>
-      </div>
-      <div id="toolDesc" style="font-size:0.8rem;color:var(--muted)"></div>
-      <textarea id="toolInput" placeholder="Enter your input..."></textarea>
-      <button onclick="runTool()">Run Tool</button>
-      <div class="output" id="toolOutput"></div>
+  <!-- Tool Modal -->
+  <div class="modal" id="toolModal">
+    <div class="modal-content">
+      <h2 id="toolTitle"></h2>
+      <p id="toolDesc" style="color:#94a3b8;font-size:13px;"></p>
+      <textarea id="toolInput" placeholder="Enter your prompt..."></textarea>
+      <button class="generate-btn" onclick="generateOutput()">Generate</button>
+      <div class="output" id="toolOutput">Your result will appear here...</div>
+      <button class="close-btn" onclick="closeTool()">Close</button>
     </div>
-  </main>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal login-modal" id="loginModal">
+    <div class="modal-content">
+      <h2>Login</h2>
+      <input placeholder="Email"/>
+      <input placeholder="Password" type="password"/>
+      <button class="generate-btn" onclick="fakeLogin()">Login</button>
+      <button class="close-btn" onclick="closeLogin()">Cancel</button>
+      <div class="footer-note">Demo login only — real auth coming later</div>
+    </div>
+  </div>
+
+  <!-- Docs Modal -->
+  <div class="modal" id="docsModal">
+    <div class="modal-content">
+      <h2>Docs</h2>
+      <p style="font-size:13px;color:#94a3b8;line-height:1.6;">
+        Welcome to AI Toolkit 🚀<br><br>
+        This platform provides free AI-powered generators for creators, businesses,
+        students, and developers.<br><br>
+        🔹 No login required<br>
+        🔹 Free forever tier<br>
+        🔹 API-based generation<br><br>
+        Coming soon: accounts, saved history, exports, team tools.
+      </p>
+      <button class="close-btn" onclick="closeDocs()">Close</button>
+    </div>
+  </div>
+
+  <!-- Dashboard Modal -->
+  <div class="modal" id="dashboardModal">
+    <div class="modal-content">
+      <h2>Dashboard</h2>
+      <p style="font-size:13px;color:#94a3b8;line-height:1.6;">
+        Your dashboard will show:
+        <br><br>
+        ✅ Usage history<br>
+        ✅ Favorite tools<br>
+        ✅ Saved outputs<br>
+        ✅ Team projects<br><br>
+        Feature coming soon 🚧
+      </p>
+      <button class="close-btn" onclick="closeDashboard()">Close</button>
+    </div>
+  </div>
 
   <script>
-    const tools = [
-      /* CONTENT */
-      { id: "yt-title", name: "YouTube Title Generator", category: "content", desc: "Generate viral YouTube video titles from any topic." },
-      { id: "yt-script", name: "YouTube Script Generator", category: "content", desc: "Create structured video scripts in seconds." },
-      { id: "tiktok-hook", name: "TikTok Hook Generator", category: "content", desc: "Write scroll-stopping TikTok hooks instantly." },
-      { id: "ig-caption", name: "Instagram Caption Generator", category: "content", desc: "Generate engaging Instagram captions for posts." },
-      { id: "reel-hashtag", name: "Reel Hashtag Generator", category: "content", desc: "Get viral hashtag sets for reels and shorts." },
-      { id: "tweet-viral", name: "Viral Tweet Generator", category: "content", desc: "Create tweet ideas optimized for engagement." },
-      { id: "blog-outline", name: "Blog Outline Generator", category: "content", desc: "Build SEO blog outlines in seconds." },
-      { id: "newsletter-subject", name: "Newsletter Subject Generator", category: "content", desc: "Write high-open-rate email subject lines." },
-      { id: "podcast-name", name: "Podcast Name Generator", category: "content", desc: "Generate creative podcast show names." },
-      { id: "video-desc", name: "Video Description Writer", category: "content", desc: "Write optimized video descriptions." },
+    const tools = {
+      creators: [
+        {
+          name: "YouTube Title Generator",
+          desc: "Generate viral YouTube video titles from any topic.",
+          img: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Generate 10 viral YouTube titles for: ${topic}`
+        },
+        {
+          name: "YouTube Script Generator",
+          desc: "Create structured video scripts in seconds.",
+          img: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Write a YouTube video script about: ${topic}`
+        },
+        {
+          name: "TikTok Hook Generator",
+          desc: "Write scroll-stopping TikTok hooks instantly.",
+          img: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Generate 10 viral TikTok hooks for: ${topic}`
+        },
+        {
+          name: "Instagram Caption Generator",
+          desc: "Generate engaging Instagram captions for posts.",
+          img: "https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Write 10 Instagram captions about: ${topic}`
+        },
+        {
+          name: "Reel Hashtag Generator",
+          desc: "Get viral hashtag sets for reels and shorts.",
+          img: "https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Generate 20 trending hashtags for: ${topic}`
+        }
+      ],
+      business: [
+        {
+          name: "Business Name Generator",
+          desc: "Generate creative business and startup names.",
+          img: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Generate 10 business names for: ${topic}`
+        },
+        {
+          name: "Cold Email Writer",
+          desc: "Write high-converting cold emails instantly.",
+          img: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Write a cold email for: ${topic}`
+        },
+        {
+          name: "Product Description Writer",
+          desc: "Write persuasive product descriptions.",
+          img: "https://images.unsplash.com/photo-1515168833906-d2a3b82b302a?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Write a product description for: ${topic}`
+        },
+        {
+          name: "Sales Script Generator",
+          desc: "Create winning sales call scripts.",
+          img: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Write a sales script for: ${topic}`
+        },
+        {
+          name: "Startup Idea Validator",
+          desc: "Validate startup ideas with market insights.",
+          img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Validate this startup idea: ${topic}`
+        }
+      ],
+      students: [
+        {
+          name: "Study Notes Generator",
+          desc: "Generate clean study notes instantly.",
+          img: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Generate study notes on: ${topic}`
+        },
+        {
+          name: "Homework Explainer",
+          desc: "Explain homework problems clearly.",
+          img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Explain this homework question: ${topic}`
+        },
+        {
+          name: "Essay Outline Generator",
+          desc: "Create structured essay outlines.",
+          img: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Create an essay outline for: ${topic}`
+        },
+        {
+          name: "Flashcard Generator",
+          desc: "Generate flashcards from any topic.",
+          img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Generate flashcards for: ${topic}`
+        },
+        {
+          name: "Concept Explainer",
+          desc: "Explain difficult concepts simply.",
+          img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Explain this concept simply: ${topic}`
+        }
+      ],
+      developers: [
+        {
+          name: "Code Explainer",
+          desc: "Explain code line-by-line.",
+          img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Explain this code: ${topic}`
+        },
+        {
+          name: "Regex Generator",
+          desc: "Generate regex patterns instantly.",
+          img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Generate a regex for: ${topic}`
+        },
+        {
+          name: "Bug Fixer",
+          desc: "Find and fix bugs in code.",
+          img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Fix bugs in this code: ${topic}`
+        },
+        {
+          name: "SQL Query Builder",
+          desc: "Build SQL queries easily.",
+          img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Write an SQL query for: ${topic}`
+        },
+        {
+          name: "API Tester",
+          desc: "Test APIs with example requests.",
+          img: "https://images.unsplash.com/photo-1581091012184-5c7c9c27e56b?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Generate an API test for: ${topic}`
+        }
+      ],
+      fun: [
+        {
+          name: "Bio Generator",
+          desc: "Generate creative bios.",
+          img: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Generate a bio for: ${topic}`
+        },
+        {
+          name: "Pickup Line Generator",
+          desc: "Create funny pickup lines.",
+          img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Generate pickup lines about: ${topic}`
+        },
+        {
+          name: "Roast Generator",
+          desc: "Generate lighthearted roasts.",
+          img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Generate a funny roast about: ${topic}`
+        },
+        {
+          name: "Username Generator",
+          desc: "Generate unique usernames.",
+          img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Generate usernames for: ${topic}`
+        },
+        {
+          name: "Story Starter",
+          desc: "Generate creative story starters.",
+          img: "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&w=800&q=80",
+          prompt: topic => `Write a story starter about: ${topic}`
+        }
+      ]
+    };
 
-      /* BUSINESS */
-      { id: "biz-name", name: "Business Name Generator", category: "business", desc: "Generate startup and brand name ideas." },
-      { id: "idea-validate", name: "Startup Idea Validator", category: "business", desc: "Get quick validation feedback for ideas." },
-      { id: "invoice-gen", name: "Invoice Generator", category: "business", desc: "Create professional invoice text instantly." },
-      { id: "cold-email", name: "Cold Email Writer", category: "business", desc: "Write high-conversion cold emails." },
-      { id: "resume-bullets", name: "Resume Bullet Generator", category: "business", desc: "Generate strong resume bullet points." },
-      { id: "cover-letter", name: "Cover Letter Generator", category: "business", desc: "Write tailored cover letters fast." },
-      { id: "pricing-calc", name: "Pricing Calculator", category: "business", desc: "Estimate product/service pricing strategies." },
-      { id: "sales-script", name: "Sales Script Generator", category: "business", desc: "Generate persuasive sales scripts." },
-      { id: "marketing-funnel", name: "Marketing Funnel Generator", category: "business", desc: "Create complete funnel strategies." },
-      { id: "product-desc", name: "Product Description Writer", category: "business", desc: "Write high-conversion product descriptions." },
-
-      /* STUDENTS */
-      { id: "study-notes", name: "Study Notes Generator", category: "students", desc: "Turn topics into structured study notes." },
-      { id: "homework-explain", name: "Homework Explainer", category: "students", desc: "Get step-by-step explanations." },
-      { id: "essay-outline", name: "Essay Outline Generator", category: "students", desc: "Create essay outlines instantly." },
-      { id: "flashcards", name: "Flashcard Generator", category: "students", desc: "Generate study flashcards fast." },
-      { id: "exam-planner", name: "Exam Planner", category: "students", desc: "Plan exams and revision schedules." },
-      { id: "grammar-check", name: "Grammar Checker", category: "students", desc: "Improve grammar and clarity." },
-      { id: "paraphrase", name: "Paraphrasing Tool", category: "students", desc: "Rewrite text with same meaning." },
-      { id: "summary", name: "Summary Generator", category: "students", desc: "Summarize long text quickly." },
-      { id: "citation", name: "Citation Generator", category: "students", desc: "Generate academic citations." },
-      { id: "concept-explain", name: "Concept Explainer", category: "students", desc: "Explain complex topics simply." },
-
-      /* DEVELOPERS */
-      { id: "code-explain", name: "Code Explainer", category: "devs", desc: "Explain code in plain language." },
-      { id: "regex-gen", name: "Regex Generator", category: "devs", desc: "Generate regex patterns from descriptions." },
-      { id: "api-test", name: "API Tester", category: "devs", desc: "Test APIs with sample requests." },
-      { id: "json-format", name: "JSON Formatter", category: "devs", desc: "Format and validate JSON." },
-      { id: "sql-builder", name: "SQL Query Builder", category: "devs", desc: "Build SQL queries easily." },
-      { id: "bug-fix", name: "Bug Fixer", category: "devs", desc: "Suggest fixes for buggy code." },
-      { id: "code-convert", name: "Code Converter", category: "devs", desc: "Convert code between languages." },
-      { id: "algo-explain", name: "Algorithm Explainer", category: "devs", desc: "Explain algorithms step-by-step." },
-      { id: "docs-gen", name: "Documentation Generator", category: "devs", desc: "Generate code documentation." },
-      { id: "prompt-gen", name: "Prompt Generator", category: "devs", desc: "Generate high-quality AI prompts." },
-
-      /* FUN */
-      { id: "bio-gen", name: "Bio Generator", category: "fun", desc: "Generate fun bios for profiles." },
-      { id: "pickup", name: "Pickup Line Generator", category: "fun", desc: "Create funny pickup lines." },
-      { id: "roast", name: "Roast Generator", category: "fun", desc: "Generate playful roasts." },
-      { id: "username", name: "Username Generator", category: "fun", desc: "Create unique usernames." },
-      { id: "fantasy-name", name: "Fantasy Name Generator", category: "fun", desc: "Generate fantasy character names." },
-      { id: "tweet-reply", name: "Tweet Reply Generator", category: "fun", desc: "Generate tweet replies." },
-      { id: "meme-caption", name: "Meme Caption Generator", category: "fun", desc: "Write meme captions." },
-      { id: "story-starter", name: "Story Starter", category: "fun", desc: "Generate story opening lines." },
-      { id: "quote-gen", name: "Quote Generator", category: "fun", desc: "Generate inspirational quotes." },
-      { id: "personality", name: "Personality Description Generator", category: "fun", desc: "Generate personality descriptions." },
-    ];
-
-    const grid = document.getElementById("toolGrid");
-    const panel = document.getElementById("toolPanel");
-    const titleEl = document.getElementById("toolTitle");
-    const descEl = document.getElementById("toolDesc");
-    const inputEl = document.getElementById("toolInput");
-    const outputEl = document.getElementById("toolOutput");
-    const searchEl = document.getElementById("search");
-
+    let currentCategory = "creators";
     let currentTool = null;
-    let currentCategory = "content";
+
+    const toolGrid = document.getElementById("toolGrid");
+    const pageTitle = document.getElementById("pageTitle");
+    const searchInput = document.getElementById("searchInput");
 
     function renderTools() {
-      grid.innerHTML = "";
-      const query = searchEl.value.toLowerCase();
+      toolGrid.innerHTML = "";
+      const list = tools[currentCategory];
 
-      tools
-        .filter(t => t.category === currentCategory)
-        .filter(t => t.name.toLowerCase().includes(query))
-        .forEach(tool => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.innerHTML = `
-            <span class="tag">${tool.category.toUpperCase()}</span>
-            <h3>${tool.name}</h3>
-            <p>${tool.desc}</p>
-          `;
-          card.onclick = () => openTool(tool);
-          grid.appendChild(card);
-        });
+      list.forEach(tool => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.onclick = () => openTool(tool);
+        card.innerHTML = `
+          <span class="badge">${currentCategory.toUpperCase()}</span>
+          <img src="${tool.img}" />
+          <div class="card-title">${tool.name}</div>
+          <div class="card-desc">${tool.desc}</div>
+        `;
+        toolGrid.appendChild(card);
+      });
     }
 
-    function filterCategory(cat) {
+    function showCategory(cat) {
       currentCategory = cat;
+      pageTitle.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
       document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
       event.target.classList.add("active");
       renderTools();
-      closeTool();
+      filterTools();
     }
 
-    function searchTools() {
-      renderTools();
+    function filterTools() {
+      const q = searchInput.value.toLowerCase();
+      document.querySelectorAll(".card").forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(q) ? "flex" : "none";
+      });
     }
 
     function openTool(tool) {
       currentTool = tool;
-      titleEl.textContent = tool.name;
-      descEl.textContent = tool.desc;
-      inputEl.value = "";
-      outputEl.textContent = "";
-      panel.classList.add("active");
-      inputEl.focus();
+      document.getElementById("toolTitle").textContent = tool.name;
+      document.getElementById("toolDesc").textContent = tool.desc;
+      document.getElementById("toolInput").value = "";
+      document.getElementById("toolOutput").textContent = "Your result will appear here...";
+      document.getElementById("toolModal").style.display = "flex";
     }
 
     function closeTool() {
-      panel.classList.remove("active");
-      currentTool = null;
+      document.getElementById("toolModal").style.display = "none";
     }
 
-    function runTool() {
-      if (!currentTool) return;
+    function openLogin() {
+      document.getElementById("loginModal").style.display = "flex";
+    }
 
-      const input = inputEl.value.trim();
+    function closeLogin() {
+      document.getElementById("loginModal").style.display = "none";
+    }
+
+    function fakeLogin() {
+      alert("Login system coming soon 🚀");
+      closeLogin();
+    }
+
+    function openDocs() {
+      document.getElementById("docsModal").style.display = "flex";
+    }
+
+    function closeDocs() {
+      document.getElementById("docsModal").style.display = "none";
+    }
+
+    function openDashboard() {
+      document.getElementById("dashboardModal").style.display = "flex";
+    }
+
+    function closeDashboard() {
+      document.getElementById("dashboardModal").style.display = "none";
+    }
+
+    async function generateOutput() {
+      const input = document.getElementById("toolInput").value.trim();
+      const output = document.getElementById("toolOutput");
       if (!input) {
-        outputEl.textContent = "Please enter some input.";
+        output.textContent = "Please enter something.";
         return;
       }
 
-      // Fake AI logic (templates) — replace later with real backend
-      let results = [];
+      output.textContent = "Generating...";
 
-      const topic = input;
+      // ======= FREE AI BACKEND (HuggingFace Inference API) =======
+      // Replace YOUR_API_KEY with your HuggingFace token
+      // Or leave blank to use demo fallback
+      const HF_API_KEY = "";
 
-      const generators = {
-        "yt-title": () => [
-          `I Tried ${topic} for 7 Days — Here’s What Happened`,
-          `${topic}: The Truth Nobody Tells You`,
-          `How ${topic} Changed My Life`,
-          `Top 5 ${topic} Tips That Actually Work`,
-          `${topic} Explained in 5 Minutes`
-        ],
-        "yt-script": () => [
-          `Intro: Hook your audience with a bold claim about ${topic}.\n\nBody:\n1. What is ${topic}\n2. Why it matters\n3. Common mistakes\n4. Best practices\n\nOutro: CTA to like & subscribe.`,
-        ],
-        "tiktok-hook": () => [
-          `Nobody talks about this with ${topic}...`,
-          `I wish I knew this before trying ${topic}`,
-          `Stop scrolling — this will change how you see ${topic}`,
-          `This ${topic} trick blew my mind`,
-          `You’re doing ${topic} wrong`
-        ],
-        "ig-caption": () => [
-          `${topic} but make it iconic ✨`,
-          `POV: You finally understand ${topic}`,
-          `${topic} vibes only 🔥`,
-          `Leveling up with ${topic}`,
-          `Everything changed when I tried ${topic}`
-        ],
-        "reel-hashtag": () => [
-          `#${topic.replace(/\s+/g,"")} #reels #viral #explore #trending`,
-          `#${topic.replace(/\s+/g,"")}Tips #shorts #creator #growth`,
-          `#${topic.replace(/\s+/g,"")}Life #instagood #daily #motivation`
-        ],
-        "tweet-viral": () => [
-          `I spent 30 days on ${topic} and here’s what nobody tells you:`,
-          `${topic} is easier than you think. Here’s how:`,
-          `If you’re struggling with ${topic}, read this:`,
-          `Unpopular opinion about ${topic}:`,
-          `Most people fail at ${topic} because:`
-        ],
-        "blog-outline": () => [
-          `Title: The Ultimate Guide to ${topic}\n\n1. Introduction\n2. What is ${topic}?\n3. Benefits\n4. Step-by-step process\n5. Common mistakes\n6. FAQs\n7. Conclusion`
-        ],
-        "newsletter-subject": () => [
-          `${topic}: What Nobody Tells You`,
-          `The Secret Behind ${topic}`,
-          `You’re Doing ${topic} Wrong`,
-          `My Honest Take on ${topic}`,
-          `${topic} Made Me Rethink Everything`
-        ],
-        "podcast-name": () => [
-          `The ${topic} Show`,
-          `${topic} Unfiltered`,
-          `${topic} Deep Dive`,
-          `The Future of ${topic}`,
-          `${topic} Weekly`
-        ],
-        "video-desc": () => [
-          `In this video, we break down ${topic} step by step, including key tips, mistakes to avoid, and best practices. Perfect for beginners and pros alike.`
-        ],
+      try {
+        if (!HF_API_KEY) {
+          // Demo fallback (no real AI)
+          await new Promise(r => setTimeout(r, 800));
+          output.textContent = currentTool.prompt(input);
+          return;
+        }
 
-        "biz-name": () => [
-          `${topic} Labs`,
-          `${topic} Solutions`,
-          `${topic} Co`,
-          `${topic} Systems`,
-          `${topic} Works`
-        ],
-        "idea-validate": () => [
-          `Market: Growing demand for ${topic}\nProblem: Users struggle with efficiency\nSolution: Automate using AI\nMonetization: SaaS subscription\nNext step: Build MVP and test`
-        ],
-        "invoice-gen": () => [
-          `INVOICE\n\nClient: [Client Name]\nService: ${topic}\nAmount: ₹____\nDue Date: ____\n\nThank you for your business.`
-        ],
-        "cold-email": () => [
-          `Subject: Quick question about ${topic}\n\nHi [Name],\n\nI noticed your work around ${topic} and wanted to connect. I believe we can help you improve results quickly.\n\nBest,\n[Your Name]`
-        ],
-        "resume-bullets": () => [
-          `• Led initiatives related to ${topic} improving efficiency by X%\n• Implemented solutions in ${topic} projects\n• Collaborated cross-functionally on ${topic} programs`
-        ],
-        "cover-letter": () => [
-          `Dear Hiring Manager,\n\nI’m excited to apply for the role involving ${topic}. My experience includes building impactful solutions and driving measurable results.\n\nSincerely,\n[Your Name]`
-        ],
-        "pricing-calc": () => [
-          `Basic Plan: ₹499/mo\nPro Plan: ₹999/mo\nEnterprise: Custom\n\nPricing based on value delivered for ${topic}.`
-        ],
-        "sales-script": () => [
-          `Hi [Name], are you currently struggling with ${topic}? We help businesses improve results quickly. Would you like a 5-minute demo?`
-        ],
-        "marketing-funnel": () => [
-          `Awareness: Content around ${topic}\nInterest: Lead magnet\nConsideration: Case studies\nConversion: Demo/trial\nRetention: Email campaigns`
-        ],
-        "product-desc": () => [
-          `This ${topic} solution helps you save time, reduce errors, and improve results with an easy-to-use platform built for scale.`
-        ],
+        const res = await fetch("https://api-inference.huggingface.co/models/google/flan-t5-large", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + HF_API_KEY,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            inputs: currentTool.prompt(input)
+          })
+        });
 
-        "study-notes": () => [
-          `Topic: ${topic}\n\nDefinition:\nKey points:\n• Point 1\n• Point 2\n• Point 3\n\nSummary:\n${topic} explained simply.`
-        ],
-        "homework-explain": () => [
-          `Step 1: Understand ${topic}\nStep 2: Break into parts\nStep 3: Solve logically\nStep 4: Review answer`
-        ],
-        "essay-outline": () => [
-          `Essay on ${topic}\n\n1. Introduction\n2. Background\n3. Main arguments\n4. Examples\n5. Conclusion`
-        ],
-        "flashcards": () => [
-          `Q: What is ${topic}?\nA: Definition and explanation\n\nQ: Why is ${topic} important?\nA: Key benefits`
-        ],
-        "exam-planner": () => [
-          `Study Plan for ${topic}\nDay 1: Basics\nDay 2: Practice\nDay 3: Revision\nDay 4: Mock test`
-        ],
-        "grammar-check": () => [
-          `Corrected text:\n\n${topic}\n\n(Suggested grammar improvements applied)`
-        ],
-        "paraphrase": () => [
-          `Rewritten version:\n\n${topic}\n\n(Meaning preserved)`
-        ],
-        "summary": () => [
-          `Summary:\n\n${topic.split(" ").slice(0,20).join(" ")}...`
-        ],
-        "citation": () => [
-          `APA: Author, A. (Year). Title related to ${topic}. Publisher.\nMLA: Author. "Title." Publisher, Year.`
-        ],
-        "concept-explain": () => [
-          `${topic} explained simply:\n\n${topic} is a concept that focuses on efficiency, clarity, and results in real-world applications.`
-        ],
-
-        "code-explain": () => [
-          `This code works by first initializing variables, then applying logic to process data related to ${topic}, and finally returning the result.`
-        ],
-        "regex-gen": () => [
-          `Regex pattern for ${topic}:\n\n/^${topic.replace(/\s+/g,".*")}$/i`
-        ],
-        "api-test": () => [
-          `GET /api/${topic.replace(/\s+/g,"-")}\nHeaders:\nAuthorization: Bearer TOKEN\n\nResponse: 200 OK`
-        ],
-        "json-format": () => [
-          `{\n  "topic": "${topic}",\n  "status": "formatted",\n  "data": []\n}`
-        ],
-        "sql-builder": () => [
-          `SELECT * FROM table WHERE column LIKE '%${topic}%';`
-        ],
-        "bug-fix": () => [
-          `Possible fix:\n1. Check null values\n2. Validate inputs\n3. Add error handling\n4. Test edge cases`
-        ],
-        "code-convert": () => [
-          `Converted version of ${topic} code:\n\n// Example output\nfunction example() {\n  return true;\n}`
-        ],
-        "algo-explain": () => [
-          `${topic} algorithm works by breaking the problem into smaller steps, processing them sequentially, and optimizing for performance.`
-        ],
-        "docs-gen": () => [
-          `# ${topic} Documentation\n\n## Overview\n...\n\n## Installation\n...\n\n## Usage\n...`
-        ],
-        "prompt-gen": () => [
-          `Write a detailed prompt to generate ${topic} with examples, edge cases, and formatting rules.`
-        ],
-
-        "bio-gen": () => [
-          `${topic} enthusiast | Building cool things | Always learning 🚀`
-        ],
-        "pickup": () => [
-          `Are you into ${topic}? Because you just made my day better 😄`
-        ],
-        "roast": () => [
-          `I’d explain ${topic} to you, but I don’t have enough time or crayons.`
-        ],
-        "username": () => [
-          `${topic.replace(/\s+/g,"")}_pro`,
-          `${topic.replace(/\s+/g,"")}_x`,
-          `real_${topic.replace(/\s+/g,"")}`,
-          `${topic.replace(/\s+/g,"")}_ai`,
-          `${topic.replace(/\s+/g,"")}_hub`
-        ],
-        "fantasy-name": () => [
-          `Zarion of ${topic}`,
-          `${topic}wyn the Brave`,
-          `Eldar ${topic}`,
-          `${topic}rax Stormborn`
-        ],
-        "tweet-reply": () => [
-          `Totally agree — ${topic} is underrated.`,
-          `This is such a good point about ${topic}.`,
-          `You explained ${topic} perfectly.`,
-          `I’ve had the same experience with ${topic}.`
-        ],
-        "meme-caption": () => [
-          `When you finally understand ${topic} 😂`,
-          `Me pretending I know ${topic}`,
-          `${topic} at 3am hits different`
-        ],
-        "story-starter": () => [
-          `The first time I encountered ${topic}, I knew everything was about to change.`
-        ],
-        "quote-gen": () => [
-          `"Success with ${topic} starts with consistency."`
-        ],
-        "personality": () => [
-          `${topic} personality: Curious, driven, adaptable, and always learning.`
-        ]
-      };
-
-      const gen = generators[currentTool.id];
-      if (!gen) {
-        outputEl.textContent = "Tool logic not implemented yet.";
-        return;
+        const data = await res.json();
+        output.textContent = data[0]?.generated_text || "No output.";
+      } catch (err) {
+        output.textContent = "Error generating output. Try again.";
       }
-
-      results = gen();
-      outputEl.textContent = Array.isArray(results) ? results.join("\n\n") : results;
     }
 
-    // Initial render
     renderTools();
   </script>
-
 </body>
 </html>
