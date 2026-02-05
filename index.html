@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YouTube Title Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #020617);
+      color: white;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .app {
+      background: #020617;
+      border-radius: 16px;
+      padding: 20px;
+      max-width: 420px;
+      width: 95%;
+      box-shadow: 0 0 30px rgba(0,0,0,0.6);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 1.4rem;
+    }
+
+    p {
+      text-align: center;
+      opacity: 0.8;
+      font-size: 0.9rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background: #22c55e;
+      color: black;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .titles {
+      margin-top: 15px;
+    }
+
+    .title-box {
+      background: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    .copy-btn {
+      background: #3b82f6;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .copy-btn:hover {
+      background: #2563eb;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.7rem;
+      opacity: 0.6;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <h1>🔥 YouTube Title Generator</h1>
+  <p>Enter your video topic and get viral titles</p>
+
+  <input id="topic" placeholder="e.g. How to make money online" />
+  <button onclick="generateTitles()">Generate Titles</button>
+
+  <div class="titles" id="titles"></div>
+
+  <div class="footer">100% Free AI Tool</div>
+</div>
+
+<script>
+async function generateTitles() {
+  const topic = document.getElementById("topic").value.trim();
+  if (!topic) return alert("Enter a topic");
+
+  const output = document.getElementById("titles");
+  output.innerHTML = "⏳ Generating...";
+
+  try {
+    const res = await fetch("https://api-inference.huggingface.co/models/google/flan-t5-large", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        inputs: `Generate 10 viral YouTube video titles for this topic:\n${topic}`
+      })
+    });
+
+    const data = await res.json();
+    let text = data[0].generated_text;
+
+    const titles = text.split("\n").filter(t => t.trim());
+
+    output.innerHTML = "";
+    titles.slice(0, 10).forEach(title => {
+      const div = document.createElement("div");
+      div.className = "title-box";
+      div.innerHTML = `
+        <span>${title.replace(/^\d+\.?\s*/, "")}</span>
+        <button class="copy-btn" onclick="copyText(this)">Copy</button>
+      `;
+      output.appendChild(div);
+    });
+
+  } catch (err) {
+    output.innerHTML = "❌ Error generating titles. Try again.";
+  }
+}
+
+function copyText(btn) {
+  const text = btn.parentElement.querySelector("span").innerText;
+  navigator.clipboard.writeText(text);
+  btn.innerText = "Copied!";
+  setTimeout(() => btn.innerText = "Copy", 1500);
+}
+</script>
+
+</body>
+</html>
