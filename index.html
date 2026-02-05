@@ -1,332 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Toolkit</title>
+  <style>
+    * { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #0b1220, #020617);
+      color: white;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 230px;
+      background: #020617;
+      border-right: 1px solid #0f172a;
+      padding: 20px;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      color: #38bdf8;
+    }
+
+    .section {
+      font-size: 12px;
+      opacity: 0.6;
+      margin: 20px 0 8px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      color: white;
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 6px;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      background: #0f172a;
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      padding: 24px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .search {
+      width: 280px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      background: #020617;
+      color: white;
+      border: 1px solid #0f172a;
+    }
+
+    .btn {
+      background: #22c55e;
+      color: black;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn.secondary {
+      background: #020617;
+      color: white;
+      border: 1px solid #0f172a;
+    }
+
+    h1 {
+      margin: 0 0 20px;
+      font-size: 26px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: linear-gradient(160deg, #020617, #020617);
+      border: 1px solid #0f172a;
+      border-radius: 14px;
+      padding: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #22c55e;
+    }
+
+    .badge {
+      font-size: 11px;
+      background: #0f172a;
+      width: fit-content;
+      padding: 3px 8px;
+      border-radius: 20px;
+      color: #22c55e;
+      font-weight: bold;
+    }
+
+    .card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin: 4px 0;
+    }
+
+    .card-title {
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-box {
+      background: #020617;
+      border: 1px solid #0f172a;
+      border-radius: 16px;
+      padding: 20px;
+      width: 90%;
+      max-width: 650px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+    }
+
+    .close {
+      cursor: pointer;
+      font-size: 18px;
+      opacity: 0.7;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      background: #020617;
+      color: white;
+      border: 1px solid #0f172a;
+      border-radius: 10px;
+      padding: 10px;
+      resize: vertical;
+    }
+
+    .output {
+      background: #020617;
+      border: 1px solid #0f172a;
+      border-radius: 10px;
+      padding: 12px;
+      min-height: 120px;
+      white-space: pre-wrap;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .modal-actions {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    /* Simple pages */
+    .simple-page {
+      max-width: 700px;
+      margin: 60px auto;
+      text-align: center;
+    }
+
+    .simple-page h2 {
+      margin-bottom: 10px;
+    }
+
+    .simple-page p {
+      opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      .main {
+        padding: 16px;
+      }
+      .search {
+        width: 160px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">⚡ AI Toolkit</div>
+
+    <div class="section">CONTENT</div>
+    <button class="nav-btn active" onclick="showCategory('creators', this)">Creators</button>
+    <button class="nav-btn" onclick="showCategory('business', this)">Business</button>
+    <button class="nav-btn" onclick="showCategory('students', this)">Students</button>
+    <button class="nav-btn" onclick="showCategory('developers', this)">Developers</button>
+    <button class="nav-btn" onclick="showCategory('fun', this)">Fun</button>
+
+    <div class="section">PLATFORM</div>
+    <button class="nav-btn" onclick="openDashboard()">Dashboard</button>
+    <button class="nav-btn" onclick="openDocs()">Docs</button>
+    <button class="nav-btn" onclick="openLogin()">Login</button>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <input id="searchInput" class="search" placeholder="Search tools..." oninput="filterTools()" />
+      <button class="btn secondary" onclick="openLogin()">Free • No Login</button>
+    </div>
+
+    <h1 id="pageTitle">Creators</h1>
+    <div id="toolGrid" class="grid"></div>
+  </div>
+
+</div>
+
+<!-- Tool Modal -->
+<div id="toolModal" class="modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="toolTitle"></h2>
+      <span class="close" onclick="closeTool()">✖</span>
+    </div>
+    <p id="toolDesc" style="opacity:0.7;margin-top:-6px"></p>
+    <textarea id="toolInput" placeholder="Enter your request..."></textarea>
+    <div class="output" id="toolOutput">Your result will appear here...</div>
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeTool()">Close</button>
+      <button class="btn" onclick="generateOutput()">Generate</button>
+    </div>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboardModal" class="modal">
+  <div class="modal-box simple-page">
+    <div class="modal-header">
+      <h2>Dashboard</h2>
+      <span class="close" onclick="closeDashboard()">✖</span>
+    </div>
+    <p>🚀 Dashboard coming soon.</p>
+    <p>Your usage stats, saved generations, and history will appear here.</p>
+  </div>
+</div>
+
+<!-- Docs -->
+<div id="docsModal" class="modal">
+  <div class="modal-box simple-page">
+    <div class="modal-header">
+      <h2>Docs</h2>
+      <span class="close" onclick="closeDocs()">✖</span>
+    </div>
+    <p>📚 AI Toolkit Documentation</p>
+    <p>1. Choose a tool</p>
+    <p>2. Enter your request</p>
+    <p>3. Click Generate</p>
+    <p>4. Get AI-powered results instantly</p>
+  </div>
+</div>
+
+<!-- Login -->
+<div id="loginModal" class="modal">
+  <div class="modal-box simple-page">
+    <div class="modal-header">
+      <h2>Login</h2>
+      <span class="close" onclick="closeLogin()">✖</span>
+    </div>
+    <p>🔐 Login system coming soon.</p>
+    <p>For now, enjoy unlimited free AI tools.</p>
+  </div>
+</div>
+
 <script>
-  const AI_BACKEND = "https://solitary-bird-8d07ai.lucifernexgen.workers.dev/";
+/* ============================
+   AI BACKEND
+============================ */
+const AI_BACKEND = "https://solitary-bird-8d07ai.lucifernexgen.workers.dev/";
 
-  const tools = {
-    creators: [
-      {
-        name: "YouTube Title Generator",
-        desc: "Generate viral YouTube video titles from any topic.",
-        img: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=800&q=80",
-        system: "You are a YouTube growth expert. Generate catchy, high-CTR YouTube titles.",
-        buildPrompt: input =>
-          `Topic: ${input}\nGenerate 10 viral YouTube titles.`
-      },
-      {
-        name: "YouTube Script Generator",
-        desc: "Create structured video scripts in seconds.",
-        img: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80",
-        system: "You are a professional YouTube scriptwriter.",
-        buildPrompt: input =>
-          `Write a complete engaging YouTube script for this topic:\n${input}`
-      },
-      {
-        name: "TikTok Hook Generator",
-        desc: "Write scroll-stopping TikTok hooks instantly.",
-        img: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80",
-        system: "You are a viral TikTok content strategist.",
-        buildPrompt: input =>
-          `Generate 10 short, scroll-stopping TikTok hooks for:\n${input}`
-      },
-      {
-        name: "Instagram Caption Generator",
-        desc: "Generate engaging Instagram captions for posts.",
-        img: "https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=800&q=80",
-        system: "You are a social media copywriter.",
-        buildPrompt: input =>
-          `Write 5 high-performing Instagram captions with emojis and hashtags for:\n${input}`
-      },
-      {
-        name: "Reel Hashtag Generator",
-        desc: "Get viral hashtag sets for reels and shorts.",
-        img: "https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&w=800&q=80",
-        system: "You are an Instagram growth hacker.",
-        buildPrompt: input =>
-          `Generate 25 trending Instagram reel hashtags for:\n${input}`
-      }
-    ],
-
-    business: [
-      {
-        name: "Business Name Generator",
-        desc: "Generate creative business and startup names.",
-        img: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80",
-        system: "You are a branding expert.",
-        buildPrompt: input =>
-          `Combine these names and create 10 professional brand names suitable for a business:\n${input}`
-      },
-      {
-        name: "Cold Email Writer",
-        desc: "Write high-converting cold emails instantly.",
-        img: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80",
-        system: "You are a B2B sales expert.",
-        buildPrompt: input =>
-          `Write a high-converting cold email for:\n${input}`
-      },
-      {
-        name: "Product Description Writer",
-        desc: "Write persuasive product descriptions.",
-        img: "https://images.unsplash.com/photo-1515168833906-d2a3b82b302a?auto=format&fit=crop&w=800&q=80",
-        system: "You are an eCommerce copywriter.",
-        buildPrompt: input =>
-          `Write a persuasive product description for:\n${input}`
-      },
-      {
-        name: "Sales Script Generator",
-        desc: "Create winning sales call scripts.",
-        img: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?auto=format&fit=crop&w=800&q=80",
-        system: "You are a sales coach.",
-        buildPrompt: input =>
-          `Write a professional sales call script for:\n${input}`
-      },
-      {
-        name: "Startup Idea Validator",
-        desc: "Validate startup ideas with market insights.",
-        img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
-        system: "You are a startup mentor.",
-        buildPrompt: input =>
-          `Validate this startup idea with pros, cons, target market, and monetization:\n${input}`
-      }
-    ],
-
-    students: [
-      {
-        name: "Study Notes Generator",
-        desc: "Generate clean study notes instantly.",
-        img: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=80",
-        system: "You are a teacher.",
-        buildPrompt: input =>
-          `Generate clean, structured study notes for:\n${input}`
-      },
-      {
-        name: "Homework Explainer",
-        desc: "Explain homework problems clearly.",
-        img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80",
-        system: "You are a tutor.",
-        buildPrompt: input =>
-          `Explain this homework question step-by-step:\n${input}`
-      },
-      {
-        name: "Essay Outline Generator",
-        desc: "Create structured essay outlines.",
-        img: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&q=80",
-        system: "You are an academic writer.",
-        buildPrompt: input =>
-          `Create a well-structured essay outline for:\n${input}`
-      },
-      {
-        name: "Flashcard Generator",
-        desc: "Generate flashcards from any topic.",
-        img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80",
-        system: "You are a learning coach.",
-        buildPrompt: input =>
-          `Generate flashcards for this topic:\n${input}`
-      },
-      {
-        name: "Concept Explainer",
-        desc: "Explain difficult concepts simply.",
-        img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
-        system: "You are a great teacher.",
-        buildPrompt: input =>
-          `Explain this concept in simple terms:\n${input}`
-      }
-    ],
-
-    developers: [
-      {
-        name: "Code Explainer",
-        desc: "Explain code line-by-line.",
-        img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
-        system: "You are a senior software engineer.",
-        buildPrompt: input =>
-          `Explain this code line-by-line:\n${input}`
-      },
-      {
-        name: "Regex Generator",
-        desc: "Generate regex patterns instantly.",
-        img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
-        system: "You are a regex expert.",
-        buildPrompt: input =>
-          `Generate a regex pattern for:\n${input}`
-      },
-      {
-        name: "Bug Fixer",
-        desc: "Find and fix bugs in code.",
-        img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
-        system: "You are a debugging expert.",
-        buildPrompt: input =>
-          `Fix bugs in this code and explain:\n${input}`
-      },
-      {
-        name: "SQL Query Builder",
-        desc: "Build SQL queries easily.",
-        img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80",
-        system: "You are a database expert.",
-        buildPrompt: input =>
-          `Write an optimized SQL query for:\n${input}`
-      },
-      {
-        name: "API Tester",
-        desc: "Test APIs with example requests.",
-        img: "https://images.unsplash.com/photo-1581091012184-5c7c9c27e56b?auto=format&fit=crop&w=800&q=80",
-        system: "You are a backend tester.",
-        buildPrompt: input =>
-          `Generate example API test requests for:\n${input}`
-      }
-    ],
-
-    fun: [
-      {
-        name: "Bio Generator",
-        desc: "Generate creative bios.",
-        img: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=800&q=80",
-        system: "You are a creative writer.",
-        buildPrompt: input =>
-          `Generate a fun and creative bio for:\n${input}`
-      },
-      {
-        name: "Pickup Line Generator",
-        desc: "Create funny pickup lines.",
-        img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=800&q=80",
-        system: "You are humorous.",
-        buildPrompt: input =>
-          `Generate funny pickup lines about:\n${input}`
-      },
-      {
-        name: "Roast Generator",
-        desc: "Generate lighthearted roasts.",
-        img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
-        system: "You are witty.",
-        buildPrompt: input =>
-          `Generate a funny roast about:\n${input}`
-      },
-      {
-        name: "Username Generator",
-        desc: "Generate unique usernames.",
-        img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=800&q=80",
-        system: "You are creative.",
-        buildPrompt: input =>
-          `Generate 10 unique usernames for:\n${input}`
-      },
-      {
-        name: "Story Starter",
-        desc: "Generate creative story starters.",
-        img: "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&w=800&q=80",
-        system: "You are a novelist.",
-        buildPrompt: input =>
-          `Write a creative story starter about:\n${input}`
-      }
-    ]
-  };
-
-  let currentCategory = "creators";
-  let currentTool = null;
-
-  const toolGrid = document.getElementById("toolGrid");
-  const pageTitle = document.getElementById("pageTitle");
-  const searchInput = document.getElementById("searchInput");
-
-  function renderTools() {
-    toolGrid.innerHTML = "";
-    const list = tools[currentCategory];
-
-    list.forEach(tool => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.onclick = () => openTool(tool);
-      card.innerHTML = `
-        <span class="badge">${currentCategory.toUpperCase()}</span>
-        <img src="${tool.img}" />
-        <div class="card-title">${tool.name}</div>
-        <div class="card-desc">${tool.desc}</div>
-      `;
-      toolGrid.appendChild(card);
-    });
-  }
-
-  function showCategory(cat) {
-    currentCategory = cat;
-    pageTitle.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
-    document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
-    event.target.classList.add("active");
-    renderTools();
-    filterTools();
-  }
-
-  function filterTools() {
-    const q = searchInput.value.toLowerCase();
-    document.querySelectorAll(".card").forEach(card => {
-      const text = card.innerText.toLowerCase();
-      card.style.display = text.includes(q) ? "flex" : "none";
-    });
-  }
-
-  function openTool(tool) {
-    currentTool = tool;
-    document.getElementById("toolTitle").textContent = tool.name;
-    document.getElementById("toolDesc").textContent = tool.desc;
-    document.getElementById("toolInput").value = "";
-    document.getElementById("toolOutput").textContent = "Your result will appear here...";
-    document.getElementById("toolModal").style.display = "flex";
-  }
-
-  function closeTool() {
-    document.getElementById("toolModal").style.display = "none";
-  }
-
-  function openLogin() {
-    document.getElementById("loginModal").style.display = "flex";
-  }
-
-  function closeLogin() {
-    document.getElementById("loginModal").style.display = "none";
-  }
-
-  function fakeLogin() {
-    alert("Login system coming soon 🚀");
-    closeLogin();
-  }
-
-  function openDocs() {
-    document.getElementById("docsModal").style.display = "flex";
-  }
-
-  function closeDocs() {
-    document.getElementById("docsModal").style.display = "none";
-  }
-
-  function openDashboard() {
-    document.getElementById("dashboardModal").style.display = "flex";
-  }
-
-  function closeDashboard() {
-    document.getElementById("dashboardModal").style.display = "none";
-  }
-
-  async function generateOutput() {
-    const input = document.getElementById("toolInput").value.trim();
-    const output = document.getElementById("toolOutput");
-    if (!input) {
-      output.textContent = "Please enter something.";
-      return;
+/* ============================
+   TOOLS CONFIG
+============================ */
+const tools = {
+  creators: [
+    {
+      name: "YouTube Title Generator",
+      desc: "Generate viral YouTube video titles from any topic.",
+      img: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=800&q=80",
+      system: "You are a YouTube growth expert.",
+      buildPrompt: input => `Generate 10 catchy, high-CTR YouTube titles for:\n${input}`
+    },
+    {
+      name: "YouTube Script Generator",
+      desc: "Create structured video scripts in seconds.",
+      img: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80",
+      system: "You are a professional YouTube scriptwriter.",
+      buildPrompt: input => `Write a complete engaging YouTube script for:\n${input}`
+    },
+    {
+      name: "TikTok Hook Generator",
+      desc: "Write scroll-stopping TikTok hooks instantly.",
+      img: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80",
+      system: "You are a viral TikTok content strategist.",
+      buildPrompt: input => `Generate 10 short, scroll-stopping TikTok hooks for:\n${input}`
+    },
+    {
+      name: "Instagram Caption Generator",
+      desc: "Generate engaging Instagram captions for posts.",
+      img: "https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=800&q=80",
+      system: "You are a social media copywriter.",
+      buildPrompt: input => `Write 5 high-performing Instagram captions with emojis and hashtags for:\n${input}`
+    },
+    {
+      name: "Reel Hashtag Generator",
+      desc: "Get viral hashtag sets for reels and shorts.",
+      img: "https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&w=800&q=80",
+      system: "You are an Instagram growth hacker.",
+      buildPrompt: input => `Generate 25 trending Instagram reel hashtags for:\n${input}`
     }
+  ],
 
-    output.textContent = "Thinking...";
-
-    try {
-      const res = await fetch(AI_BACKEND, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prompt: `${currentTool.system}\n\n${currentTool.buildPrompt(input)}`
-        })
-      });
-
-      const data = await res.json();
-      output.textContent = data.result || "No response.";
-    } catch (err) {
-      output.textContent = "AI backend error. Try again.";
+  business: [
+    {
+      name: "Business Name Generator",
+      desc: "Generate creative business and startup names.",
+      img: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80",
+      system: "You are a branding expert.",
+      buildPrompt: input =>
+        `Combine the given names and generate 10 professional brand names suitable for a bricks or construction business:\n${input}`
+    },
+    {
+      name: "Cold Email Writer",
+      desc: "Write high-converting cold emails instantly.",
+      img: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80",
+      system: "You are a B2B sales expert.",
+      buildPrompt: input => `Write a high-converting cold email for:\n${input}`
+    },
+    {
+      name: "Product Description Writer",
+      desc: "Write persuasive product descriptions.",
+      img: "https://images.unsplash.com/photo-1515168833906-d2a3b82b302a?auto=format&fit=crop&w=800&q=80",
+      system: "You are an eCommerce copywriter.",
+      buildPrompt: input => `Write a persuasive product description for:\n${input}`
+    },
+    {
+      name: "Sales Script Generator",
+      desc: "Create winning sales call scripts.",
+      img: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?auto=format&fit=crop&w=800&q=80",
+      system: "You are a sales coach.",
+      buildPrompt: input => `Write a professional sales call script for:\n${input}`
+    },
+    {
+      name: "Startup Idea Validator",
+      desc: "Validate startup ideas with market insights.",
+      img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+      system: "You are a startup mentor.",
+      buildPrompt: input =>
+        `Validate this startup idea with pros, cons, target market, and monetization:\n${input}`
     }
-  }
+  ],
 
+  students: [
+    {
+      name: "Study Notes Generator",
+      desc: "Generate clean study notes instantly.",
+      img: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=80",
+      system: "You are a teacher.",
+      buildPrompt: input => `Generate clean, structured study notes for:\n${input}`
+    },
+    {
+      name: "Homework Explainer",
+      desc: "Explain homework problems clearly.",
+      img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80",
+      system: "You are a tutor.",
+      buildPrompt: input => `Explain this homework question step-by-step:\n${input}`
+    },
+    {
+      name: "Essay Outline Generator",
+      desc: "Create structured essay outlines.",
+      img: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&q=80",
+      system: "You are an academic writer.",
+      buildPrompt: input => `Create a well-structured essay outline for:\n${input}`
+    },
+    {
+      name: "Flashcard Generator",
+      desc: "Generate flashcards from any topic.",
+      img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80",
+      system: "You are a learning coach.",
+      buildPrompt: input => `Generate flashcards for this topic:\n${input}`
+    },
+    {
+      name: "Concept Explainer",
+      desc: "Explain difficult concepts simply.",
+      img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+      system: "You are a great teacher.",
+      buildPrompt: input => `Explain this concept in simple terms:\n${input}`
+    }
+  ],
+
+  developers: [
+    {
+      name: "Code Explainer",
+      desc: "Explain code line-by-line.",
+      img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
+      system: "You are a senior software engineer.",
+      buildPrompt: input => `Explain this code line-by-line:\n${input}`
+    },
+    {
+      name: "Regex Generator",
+      desc: "Generate regex patterns instantly.",
+      img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+      system: "You are a regex expert.",
+      buildPrompt: input => `Generate a regex pattern for:\n${input}`
+    },
+    {
+      name: "Bug Fixer",
+      desc: "Find and fix bugs in code.",
+      img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
+      system: "You are a debugging expert.",
+      buildPrompt: input => `Fix bugs in this code and explain:\n${input}`
+    },
+    {
+      name: "SQL Query Builder",
+      desc: "Build SQL queries easily.",
+      img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80",
+      system: "You are a database expert.",
+      buildPrompt: input => `Write an optimized SQL query for:\n${input}`
+    },
+    {
+      name: "API Tester",
+      desc: "Test APIs with example requests.",
+      img: "https://images.unsplash.com/photo-1581091012184-5c7c9c27e56b?auto=format&fit=crop&w=800&q=80",
+      system: "You are a backend tester.",
+      buildPrompt: input => `Generate example API test requests for:\n${input}`
+    }
+  ],
+
+  fun: [
+    {
+      name: "Bio Generator",
+      desc: "Generate creative bios.",
+      img: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=800&q=80",
+      system: "You are a creative writer.",
+      buildPrompt: input => `Generate a fun and creative bio for:\n${input}`
+    },
+    {
+      name: "Pickup Line Generator",
+      desc: "Create funny pickup lines.",
+      img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=800&q=80",
+      system: "You are humorous.",
+      buildPrompt: input => `Generate funny pickup lines about:\n${input}`
+    },
+    {
+      name: "Roast Generator",
+      desc: "Generate lighthearted roasts.",
+      img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
+      system: "You are witty.",
+      buildPrompt: input => `Generate a funny roast about:\n${input}`
+    },
+    {
+      name: "Username Generator",
+      desc: "Generate unique usernames.",
+      img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=800&q=80",
+      system: "You are creative.",
+      buildPrompt: input => `Generate 10 unique usernames for:\n${input}`
+    },
+    {
+      name: "Story Starter",
+      desc: "Generate creative story starters.",
+      img: "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&w=800&q=80",
+      system: "You are a novelist.",
+      buildPrompt: input => `Write a creative story starter about:\n${input}`
+    }
+  ]
+};
+
+/* ============================
+   STATE
+============================ */
+let currentCategory = "creators";
+let currentTool = null;
+
+/* ============================
+   ELEMENTS
+============================ */
+const toolGrid = document.getElementById("toolGrid");
+const pageTitle = document.getElementById("pageTitle");
+const searchInput = document.getElementById("searchInput");
+
+/* ============================
+   RENDER
+============================ */
+function renderTools() {
+  toolGrid.innerHTML = "";
+  const list = tools[currentCategory];
+
+  list.forEach(tool => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.onclick = () => openTool(tool);
+    card.innerHTML = `
+      <span class="badge">${currentCategory.toUpperCase()}</span>
+      <img src="${tool.img}" />
+      <div class="card-title">${tool.name}</div>
+      <div class="card-desc">${tool.desc}</div>
+    `;
+    toolGrid.appendChild(card);
+  });
+}
+
+/* ============================
+   NAVIGATION
+============================ */
+function showCategory(cat, el) {
+  currentCategory = cat;
+  pageTitle.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+  document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+  el.classList.add("active");
   renderTools();
+  filterTools();
+}
+
+function filterTools() {
+  const q = searchInput.value.toLowerCase();
+  document.querySelectorAll(".card").forEach(card => {
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(q) ? "flex" : "none";
+  });
+}
+
+/* ============================
+   MODALS
+============================ */
+function openTool(tool) {
+  currentTool = tool;
+  document.getElementById("toolTitle").textContent = tool.name;
+  document.getElementById("toolDesc").textContent = tool.desc;
+  document.getElementById("toolInput").value = "";
+  document.getElementById("toolOutput").textContent = "Your result will appear here...";
+  document.getElementById("toolModal").style.display = "flex";
+}
+
+function closeTool() {
+  document.getElementById("toolModal").style.display = "none";
+}
+
+function openLogin() {
+  document.getElementById("loginModal").style.display = "flex";
+}
+
+function closeLogin() {
+  document.getElementById("loginModal").style.display = "none";
+}
+
+function openDocs() {
+  document.getElementById("docsModal").style.display = "flex";
+}
+
+function closeDocs() {
+  document.getElementById("docsModal").style.display = "none";
+}
+
+function openDashboard() {
+  document.getElementById("dashboardModal").style.display = "flex";
+}
+
+function closeDashboard() {
+  document.getElementById("dashboardModal").style.display = "none";
+}
+
+/* ============================
+   AI CALL
+============================ */
+async function generateOutput() {
+  const input = document.getElementById("toolInput").value.trim();
+  const output = document.getElementById("toolOutput");
+  if (!input) {
+    output.textContent = "Please enter something.";
+    return;
+  }
+
+  output.textContent = "Thinking...";
+
+  try {
+    const res = await fetch(AI_BACKEND, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        prompt: `${currentTool.system}\n\n${currentTool.buildPrompt(input)}`
+      })
+    });
+
+    const data = await res.json();
+    output.textContent = data.result || "No response from AI.";
+  } catch (err) {
+    output.textContent = "❌ AI backend error. Try again.";
+  }
+}
+
+/* ============================
+   INIT
+============================ */
+renderTools();
 </script>
+
+</body>
+</html>
