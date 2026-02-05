@@ -6,164 +6,127 @@
   <title>YouTube Title Generator</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #020617);
-      color: white;
       margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family: system-ui, Arial, sans-serif;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+      color: #fff;
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
-    .app {
-      background: #020617;
+    .card {
+      background: rgba(2, 6, 23, 0.9);
+      padding: 24px;
       border-radius: 16px;
-      padding: 20px;
+      width: 100%;
       max-width: 420px;
-      width: 95%;
-      box-shadow: 0 0 30px rgba(0,0,0,0.6);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
-
     h1 {
-      text-align: center;
-      margin-bottom: 10px;
       font-size: 1.4rem;
+      margin-bottom: 6px;
+      text-align: center;
     }
-
     p {
       text-align: center;
       opacity: 0.8;
       font-size: 0.9rem;
+      margin-top: 0;
+      margin-bottom: 14px;
     }
-
     input {
       width: 100%;
       padding: 12px;
       border-radius: 8px;
       border: none;
-      outline: none;
       font-size: 1rem;
-      margin-top: 10px;
+      outline: none;
     }
-
     button {
+      margin-top: 10px;
       width: 100%;
       padding: 12px;
       border-radius: 8px;
       border: none;
-      background: #22c55e;
-      color: black;
       font-size: 1rem;
-      font-weight: bold;
-      margin-top: 10px;
+      font-weight: 600;
+      background: #22c55e;
+      color: #052e16;
       cursor: pointer;
     }
-
     button:hover {
       background: #16a34a;
     }
-
-    .titles {
-      margin-top: 15px;
+    .results {
+      margin-top: 14px;
     }
-
-    .title-box {
+    .result {
       background: #020617;
-      border: 1px solid #1e293b;
-      border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.9rem;
-    }
-
-    .copy-btn {
-      background: #3b82f6;
-      border: none;
-      color: white;
-      padding: 5px 10px;
+      padding: 8px 10px;
       border-radius: 6px;
-      font-size: 0.8rem;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
       cursor: pointer;
     }
-
-    .copy-btn:hover {
-      background: #2563eb;
+    .result:hover {
+      background: #020617cc;
     }
-
     .footer {
       text-align: center;
-      font-size: 0.7rem;
-      opacity: 0.6;
       margin-top: 10px;
+      font-size: 0.75rem;
+      opacity: 0.6;
     }
   </style>
 </head>
 <body>
 
-<div class="app">
-  <h1>🔥 YouTube Title Generator</h1>
-  <p>Enter your video topic and get viral titles</p>
+  <div class="card">
+    <h1>🔥 YouTube Title Generator</h1>
+    <p>Enter your video topic and get viral titles</p>
 
-  <input id="topic" placeholder="e.g. How to make money online" />
-  <button onclick="generateTitles()">Generate Titles</button>
+    <input type="text" id="topic" placeholder="e.g. food blogging" />
+    <button onclick="generateTitles()">Generate Titles</button>
 
-  <div class="titles" id="titles"></div>
+    <div class="results" id="results"></div>
 
-  <div class="footer">100% Free AI Tool</div>
-</div>
+    <div class="footer">100% Free Tool</div>
+  </div>
 
-<script>
-async function generateTitles() {
-  const topic = document.getElementById("topic").value.trim();
-  if (!topic) return alert("Enter a topic");
+  <script>
+    function generateTitles() {
+      const topic = document.getElementById("topic").value.trim();
+      const results = document.getElementById("results");
 
-  const output = document.getElementById("titles");
-  output.innerHTML = "⏳ Generating...";
+      if (!topic) {
+        results.innerHTML = "<div class='result'>Please enter a topic.</div>";
+        return;
+      }
 
-  try {
-    const res = await fetch("https://api-inference.huggingface.co/models/google/flan-t5-large", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        inputs: `Generate 10 viral YouTube video titles for this topic:\n${topic}`
-      })
-    });
+      const templates = [
+        `I Tried ${topic} for 7 Days — Here’s What Happened`,
+        `${topic}: The Truth Nobody Tells You`,
+        `How ${topic} Changed My Life`,
+        `Top 5 ${topic} Tips That Actually Work`,
+        `${topic} Explained in 5 Minutes`,
+        `Why Everyone Is Talking About ${topic}`,
+        `Beginner’s Guide to ${topic}`,
+        `${topic} vs Reality — Shocking Results`,
+        `I Was Wrong About ${topic}`,
+        `This ${topic} Trick Went Viral`
+      ];
 
-    const data = await res.json();
-    let text = data[0].generated_text;
-
-    const titles = text.split("\n").filter(t => t.trim());
-
-    output.innerHTML = "";
-    titles.slice(0, 10).forEach(title => {
-      const div = document.createElement("div");
-      div.className = "title-box";
-      div.innerHTML = `
-        <span>${title.replace(/^\d+\.?\s*/, "")}</span>
-        <button class="copy-btn" onclick="copyText(this)">Copy</button>
-      `;
-      output.appendChild(div);
-    });
-
-  } catch (err) {
-    output.innerHTML = "❌ Error generating titles. Try again.";
-  }
-}
-
-function copyText(btn) {
-  const text = btn.parentElement.querySelector("span").innerText;
-  navigator.clipboard.writeText(text);
-  btn.innerText = "Copied!";
-  setTimeout(() => btn.innerText = "Copy", 1500);
-}
-</script>
+      results.innerHTML = "";
+      templates.forEach(title => {
+        const div = document.createElement("div");
+        div.className = "result";
+        div.textContent = title;
+        div.onclick = () => navigator.clipboard.writeText(title);
+        results.appendChild(div);
+      });
+    }
+  </script>
 
 </body>
 </html>
